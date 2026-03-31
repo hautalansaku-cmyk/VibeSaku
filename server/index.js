@@ -152,15 +152,15 @@ app.delete('/api/products/:id', (req, res) => {
   res.json({ message: 'Book deleted successfully' });
 });
 
-app.listen(PORT, () => {
-  console.log('Server running on http://localhost:' + PORT);
-});
-
 // Serve static frontend in production
 const staticPath = path.join(__dirname, '../client/dist');
 if (fs.existsSync(staticPath)) {
   app.use(express.static(staticPath));
-  app.get('*', (req, res) => {
+  app.get('*', (_req, res) => {
     res.sendFile(path.join(staticPath, 'index.html'));
   });
 }
+
+app.listen(PORT, () => {
+  console.log('Server running on http://localhost:' + PORT);
+});
