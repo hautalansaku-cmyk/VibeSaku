@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build output
+frontend/dist/
+frontend/build/
+
+# Database (runtime file, re-created from seed on startup)
+backend/inventory.json
+
+# Logs
+npm-debug.log*
+*.log
+
+# OS
+.DS_Store
