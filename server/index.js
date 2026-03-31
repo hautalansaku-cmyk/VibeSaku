@@ -10,11 +10,8 @@ const DB_PATH = path.join(__dirname, 'db.json');
 app.use(cors());
 app.use(express.json());
 
-// --- JSON file DB helpers ---
 function readDB() {
-  if (!fs.existsSync(DB_PATH)) {
-    return { products: [], nextId: 1 };
-  }
+  if (!fs.existsSync(DB_PATH)) return { products: [], nextId: 1 };
   return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
 }
 
@@ -22,36 +19,36 @@ function writeDB(data) {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
 }
 
-// Seed database on first run
+// Seed database with 20 children's books on first run
 if (!fs.existsSync(DB_PATH)) {
   const now = new Date().toISOString();
   const seed = {
     nextId: 21,
     products: [
-      { id: 1,  name: 'Wireless Bluetooth Headphones', sku: 'ELEC-001', category: 'Electronics',        price: 79.99,  quantity: 45,  description: 'Premium sound quality with active noise cancellation', created_at: now, updated_at: now },
-      { id: 2,  name: 'Mechanical Keyboard',           sku: 'ELEC-002', category: 'Electronics',        price: 129.99, quantity: 30,  description: 'Tactile switches with RGB backlight',                  created_at: now, updated_at: now },
-      { id: 3,  name: 'USB-C Hub 7-in-1',              sku: 'ELEC-003', category: 'Electronics',        price: 49.99,  quantity: 60,  description: 'Multiple ports including HDMI and USB-A',               created_at: now, updated_at: now },
-      { id: 4,  name: "Running Shoes - Men's",          sku: 'SHOE-001', category: 'Footwear',           price: 89.99,  quantity: 25,  description: 'Lightweight with cushioned sole for comfort',            created_at: now, updated_at: now },
-      { id: 5,  name: 'Yoga Mat',                       sku: 'SPRT-001', category: 'Sports',             price: 34.99,  quantity: 50,  description: 'Non-slip surface, 6mm thickness',                       created_at: now, updated_at: now },
-      { id: 6,  name: 'Water Bottle 32oz',              sku: 'SPRT-002', category: 'Sports',             price: 24.99,  quantity: 80,  description: 'Stainless steel, keeps cold 24h',                       created_at: now, updated_at: now },
-      { id: 7,  name: 'Coffee Maker 12-Cup',            sku: 'HOME-001', category: 'Home & Kitchen',     price: 59.99,  quantity: 20,  description: 'Programmable with auto-shutoff',                         created_at: now, updated_at: now },
-      { id: 8,  name: 'Cast Iron Skillet 10"',          sku: 'HOME-002', category: 'Home & Kitchen',     price: 44.99,  quantity: 35,  description: 'Pre-seasoned, oven safe to 500F',                        created_at: now, updated_at: now },
-      { id: 9,  name: 'Bamboo Cutting Board',           sku: 'HOME-003', category: 'Home & Kitchen',     price: 19.99,  quantity: 55,  description: 'Eco-friendly, dishwasher safe',                          created_at: now, updated_at: now },
-      { id: 10, name: 'Desk Lamp LED',                  sku: 'HOME-004', category: 'Home & Kitchen',     price: 39.99,  quantity: 40,  description: 'Adjustable brightness and color temperature',             created_at: now, updated_at: now },
-      { id: 11, name: 'Backpack 30L',                   sku: 'BAGS-001', category: 'Bags & Luggage',     price: 64.99,  quantity: 28,  description: 'Waterproof with laptop compartment',                      created_at: now, updated_at: now },
-      { id: 12, name: 'Leather Wallet',                 sku: 'BAGS-002', category: 'Bags & Luggage',     price: 29.99,  quantity: 70,  description: 'Slim design, RFID blocking',                             created_at: now, updated_at: now },
-      { id: 13, name: 'Sunglasses Polarized',           sku: 'ACC-001',  category: 'Accessories',        price: 54.99,  quantity: 42,  description: 'UV400 protection, unisex',                               created_at: now, updated_at: now },
-      { id: 14, name: 'Fitness Tracker Band',           sku: 'ELEC-004', category: 'Electronics',        price: 49.99,  quantity: 33,  description: 'Heart rate, sleep tracking, waterproof',                 created_at: now, updated_at: now },
-      { id: 15, name: 'Protein Powder 2lbs',            sku: 'HLTH-001', category: 'Health & Nutrition', price: 39.99,  quantity: 65,  description: 'Whey protein, chocolate flavor',                         created_at: now, updated_at: now },
-      { id: 16, name: 'Vitamin C 1000mg',               sku: 'HLTH-002', category: 'Health & Nutrition', price: 14.99,  quantity: 120, description: '60 tablets, immune support',                             created_at: now, updated_at: now },
-      { id: 17, name: 'Notebook Set 3-Pack',            sku: 'STAT-001', category: 'Stationery',         price: 12.99,  quantity: 90,  description: 'A5 size, dotted pages',                                  created_at: now, updated_at: now },
-      { id: 18, name: 'Gel Pen Set 10-Pack',            sku: 'STAT-002', category: 'Stationery',         price: 9.99,   quantity: 100, description: 'Smooth writing, multiple colors',                        created_at: now, updated_at: now },
-      { id: 19, name: 'Phone Stand Adjustable',         sku: 'ELEC-005', category: 'Electronics',        price: 16.99,  quantity: 75,  description: 'Universal fit, foldable',                                created_at: now, updated_at: now },
-      { id: 20, name: 'Scented Candle Set',             sku: 'HOME-005', category: 'Home & Kitchen',     price: 22.99,  quantity: 48,  description: 'Soy wax, 3 fragrances, 40h burn time',                   created_at: now, updated_at: now },
+      { id: 1,  name: 'The Very Hungry Caterpillar',     sku: 'ISBN-978-0399226908', category: 'Picture Books',   price: 8.99,  quantity: 85,  description: 'By Eric Carle. Ages 2-5. A classic story of transformation through colorful collage art.', created_at: now, updated_at: now },
+      { id: 2,  name: 'Goodnight Moon',                  sku: 'ISBN-978-0694003617', category: 'Picture Books',   price: 7.99,  quantity: 72,  description: 'By Margaret Wise Brown. Ages 0-3. A timeless bedtime ritual in rhyme.', created_at: now, updated_at: now },
+      { id: 3,  name: 'Where the Wild Things Are',       sku: 'ISBN-978-0064431781', category: 'Picture Books',   price: 9.99,  quantity: 60,  description: 'By Maurice Sendak. Ages 4-8. An imaginative tale of adventure and homecoming.', created_at: now, updated_at: now },
+      { id: 4,  name: "Oh, the Places You'll Go!",       sku: 'ISBN-978-0679805274', category: 'Picture Books',   price: 11.99, quantity: 95,  description: 'By Dr. Seuss. Ages 4-8. An inspiring journey through life\'s ups and downs.', created_at: now, updated_at: now },
+      { id: 5,  name: 'The Cat in the Hat',              sku: 'ISBN-978-0394800011', category: 'Early Readers',   price: 9.99,  quantity: 110, description: 'By Dr. Seuss. Ages 5-8. A rainy day adventure with the mischievous Cat.', created_at: now, updated_at: now },
+      { id: 6,  name: 'Green Eggs and Ham',              sku: 'ISBN-978-0394800168', category: 'Early Readers',   price: 8.99,  quantity: 98,  description: 'By Dr. Seuss. Ages 4-8. An adventure in trying new things.', created_at: now, updated_at: now },
+      { id: 7,  name: 'Frog and Toad Are Friends',       sku: 'ISBN-978-0064440202', category: 'Early Readers',   price: 6.99,  quantity: 55,  description: 'By Arnold Lobel. Ages 5-8. Five heartwarming tales of friendship.', created_at: now, updated_at: now },
+      { id: 8,  name: 'Magic Tree House: Dinosaurs',     sku: 'ISBN-978-0679824114', category: 'Chapter Books',   price: 5.99,  quantity: 48,  description: 'By Mary Pope Osborne. Ages 6-10. Jack and Annie travel back to the time of dinosaurs.', created_at: now, updated_at: now },
+      { id: 9,  name: 'Charlotte\'s Web',                sku: 'ISBN-978-0064400558', category: 'Chapter Books',   price: 8.99,  quantity: 65,  description: 'By E.B. White. Ages 8-12. A beloved story of friendship between a pig and a spider.', created_at: now, updated_at: now },
+      { id: 10, name: 'The BFG',                         sku: 'ISBN-978-0142410381', category: 'Chapter Books',   price: 8.99,  quantity: 52,  description: 'By Roald Dahl. Ages 8-12. Sophie and the Big Friendly Giant share a magical adventure.', created_at: now, updated_at: now },
+      { id: 11, name: 'Harry Potter and the Sorcerer\'s Stone', sku: 'ISBN-978-0590353427', category: 'Middle Grade', price: 12.99, quantity: 120, description: 'By J.K. Rowling. Ages 9-12. A young wizard discovers his magical heritage.', created_at: now, updated_at: now },
+      { id: 12, name: 'The Lion, the Witch and the Wardrobe', sku: 'ISBN-978-0064404990', category: 'Middle Grade', price: 9.99, quantity: 75,  description: 'By C.S. Lewis. Ages 8-12. Four children discover the magical land of Narnia.', created_at: now, updated_at: now },
+      { id: 13, name: 'A Wrinkle in Time',               sku: 'ISBN-978-0312367541', category: 'Middle Grade',    price: 8.99,  quantity: 43,  description: 'By Madeleine L\'Engle. Ages 9-12. Meg Murry searches for her missing father across time.', created_at: now, updated_at: now },
+      { id: 14, name: 'My First ABC Book',               sku: 'ISBN-978-0789497123', category: 'Educational',     price: 10.99, quantity: 130, description: 'Ages 2-4. Bright illustrations make learning the alphabet fun and engaging.', created_at: now, updated_at: now },
+      { id: 15, name: 'National Geographic Kids: Sharks', sku: 'ISBN-978-1426310²16', category: 'Educational',   price: 7.99,  quantity: 67,  description: 'Ages 6-10. Fascinating facts and stunning photos about sharks.', created_at: now, updated_at: now },
+      { id: 16, name: 'The Diary of a Wimpy Kid',        sku: 'ISBN-978-0810993136', category: 'Middle Grade',    price: 10.99, quantity: 88,  description: 'By Jeff Kinney. Ages 8-13. A hilarious diary of a middle school student\'s struggles.', created_at: now, updated_at: now },
+      { id: 17, name: 'Big Book of Art Activities',      sku: 'ISBN-978-0794541309', category: 'Activity Books',  price: 13.99, quantity: 40,  description: 'Ages 5-10. Over 50 step-by-step drawing, painting, and craft projects.', created_at: now, updated_at: now },
+      { id: 18, name: 'My First Sticker Book: Animals',  sku: 'ISBN-978-1409598765', category: 'Activity Books',  price: 6.99,  quantity: 57,  description: 'Ages 3-6. 200+ stickers for hours of creative fun with animal scenes.', created_at: now, updated_at: now },
+      { id: 19, name: 'Pete the Cat: I Love My White Shoes', sku: 'ISBN-978-0061906220', category: 'Picture Books', price: 9.99, quantity: 63, description: 'By Eric Litwin. Ages 3-7. Pete shows staying positive no matter what happens.', created_at: now, updated_at: now },
+      { id: 20, name: 'Captain Underpants',              sku: 'ISBN-978-0439049962', category: 'Chapter Books',   price: 7.99,  quantity: 77,  description: 'By Dav Pilkey. Ages 7-12. George and Harold\'s outrageous hypnotized principal.', created_at: now, updated_at: now },
     ],
   };
   writeDB(seed);
-  console.log('Database seeded with 20 products');
+  console.log('Database seeded with 20 children\'s books');
 }
 
 // GET all products
@@ -99,7 +96,7 @@ app.post('/api/products', (req, res) => {
 
   const db = readDB();
   if (db.products.find(p => p.sku === sku)) {
-    return res.status(409).json({ error: 'SKU already exists' });
+    return res.status(409).json({ error: 'ISBN/SKU already exists' });
   }
 
   const product = {
@@ -128,7 +125,7 @@ app.patch('/api/products/:id', (req, res) => {
   const { name, sku, category, price, quantity, description } = req.body;
 
   if (sku && sku !== db.products[idx].sku && db.products.find(p => p.sku === sku)) {
-    return res.status(409).json({ error: 'SKU already exists' });
+    return res.status(409).json({ error: 'ISBN/SKU already exists' });
   }
 
   const product = db.products[idx];
@@ -152,9 +149,18 @@ app.delete('/api/products/:id', (req, res) => {
 
   db.products.splice(idx, 1);
   writeDB(db);
-  res.json({ message: 'Product deleted successfully' });
+  res.json({ message: 'Book deleted successfully' });
 });
 
 app.listen(PORT, () => {
   console.log('Server running on http://localhost:' + PORT);
 });
+
+// Serve static frontend in production
+const staticPath = path.join(__dirname, '../client/dist');
+if (fs.existsSync(staticPath)) {
+  app.use(express.static(staticPath));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(staticPath, 'index.html'));
+  });
+}
