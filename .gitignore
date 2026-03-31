@@ -1,0 +1,10 @@
+node_modules
+dist
+*.log
+.DS_Store
+
+# Runtime database file (regenerated automatically with seed data on first run)
+server/db.json
+
+# Vite local env files
+*.local
